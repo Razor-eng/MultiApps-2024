@@ -21,9 +21,13 @@ const Expenses = ({ user }) => {
     const fetchData = async () => {
         await getDocs(collection(db, "expenses"))
             .then((querySnapshot) => {
-                const newData = querySnapshot.docs.filter(doc => { return doc.data().id === user?.uid }).filter((doc) => {
+                const newData = querySnapshot.docs.filter(doc => {
+                    return doc.data().id === user?.uid
+                }).filter((doc) => {
                     return doc.data().product.toLowerCase().includes(search.toLowerCase()) || doc.data().type.toLowerCase().includes(search.toLowerCase()) || doc.data().amount.includes(search)
-                }).map((doc) => ({ ...doc.data(), uid: doc.id }));
+                }).map((doc) => (
+                    { ...doc.data(), uid: doc.id }
+                ));
                 setExpenses(newData);
                 setLoading(false);
             })
@@ -48,7 +52,7 @@ const Expenses = ({ user }) => {
             }
             setTotal(val);
         })
-    }, [modal, expenses])
+    }, [modal, search])
 
     return (
         <div className="md:pr-20">
@@ -122,8 +126,8 @@ const Expenses = ({ user }) => {
                         <Loader />
                         :
                         <div className="flex gap-2 flex-col mt-20 justify-center items-center h-80">
-                            <p className="text-5xl text-zinc-400">No Expense found...!</p>
-                            <h2 className="text-2xl text-zinc-400">Add a expense to start</h2>
+                            <p className="md:text-5xl text-2xl text-zinc-400">No Expense found...!</p>
+                            <h2 className="md:text-2xl text-sm text-zinc-400">Add a expense to start</h2>
                         </div>
                 )
             }

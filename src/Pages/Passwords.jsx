@@ -19,9 +19,13 @@ const Passwords = ({ user }) => {
     const fetchData = async () => {
         await getDocs(collection(db, "passwords"))
             .then((querySnapshot) => {
-                const newData = querySnapshot.docs.filter(doc => { return doc.data().id === user.uid }).filter(doc => {
+                const newData = querySnapshot.docs.filter(doc => {
+                    return doc.data().id === user.uid
+                }).filter(doc => {
                     return doc.data().website.toLowerCase().includes(search.toLowerCase()) || doc.data().userName.toLowerCase().includes(search.toLowerCase())
-                }).map((doc) => ({ ...doc.data(), uid: doc.id }));
+                }).map((doc) => (
+                    { ...doc.data(), uid: doc.id }
+                ));
                 setPasswords(newData);
                 setLoading(false);
             })
@@ -108,8 +112,8 @@ const Passwords = ({ user }) => {
                         <Loader />
                         :
                         <div className="flex gap-2 flex-col mt-20 justify-center items-center h-80">
-                            <p className="text-5xl text-zinc-400">No Passwords found...!</p>
-                            <h2 className="text-2xl text-zinc-400">Add a password to start</h2>
+                            <p className="md:text-5xl text-2xl text-zinc-400">No Passwords found...!</p>
+                            <h2 className="md:text-2xl text-sm text-zinc-400">Add a password to start</h2>
                         </div>
                 )
             }
